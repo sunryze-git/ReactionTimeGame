@@ -27,16 +27,25 @@ void Main() {
         Console.Clear();
         SetConsoleBackgroundColor(ConsoleColor.Red);
         Thread.Sleep(random.Next(3000, 6000));
-        SetConsoleBackgroundColor(ConsoleColor.Green);
         sw.Start();
+        SetConsoleBackgroundColor(ConsoleColor.Green);
+        var startTime = sw.ElapsedTicks;
         Console.ReadKey();
+        var endTime = sw.ElapsedTicks;
         sw.Stop();
 
+        var reactionTime = (double)(endTime - startTime) / Stopwatch.Frequency * 1000;
         Console.BackgroundColor = ConsoleColor.Black;
         Console.Clear();
-        WriteCenteredText($"Your reaction time was {sw.ElapsedMilliseconds}ms.");
-        WriteCenteredText($"Press any key to play again.");
+        if (sw.ElapsedMilliseconds < 10) {
+            WriteCenteredText("You cannot press the button before it turns green.");
+            WriteCenteredText("Press any key to play again.");
+        } else {
+            WriteCenteredText($"Your reaction time was {reactionTime}ms.");
+            WriteCenteredText($"Press any key to play again.");
+        }
         Console.ReadKey();
+        sw.Reset();
     }
 }
 
